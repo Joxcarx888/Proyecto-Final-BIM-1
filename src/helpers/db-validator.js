@@ -17,3 +17,11 @@ export const existeUsuarioById = async (id = '') => {
     }
 }
 
+export const existenteCategory = async (name = '') =>{
+    const existenteCategory = await User.findOne({ name });
+
+    if(existenteCategory){
+        throw new Error(` ${ name } ya existe en la base de datos`);
+    }
+}
+
