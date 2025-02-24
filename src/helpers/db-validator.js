@@ -16,3 +16,4 @@ export const existeUsuarioById = async (id = '') => {
         throw new Error(`El ID ${id} no existe`);
     }
 }
+
