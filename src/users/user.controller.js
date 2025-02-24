@@ -9,7 +9,6 @@ export const updateUser = async (req, res = response) => {
         const userRole = req.usuario.role; 
         const { password, newPassword, role, ...data } = req.body;
 
-        // Si es CLIENT, solo puede editar su propio perfil
         const userToUpdateId = userRole === "CLIENT" ? userId.toString() : id;
 
         const existingUser = await User.findById(userToUpdateId);
@@ -20,21 +19,17 @@ export const updateUser = async (req, res = response) => {
             });
         }
 
-        // Permitir solo a ADMIN modificar el rol
         if (userRole === "ADMIN" && role) {
             data.role = role;
         } else if (userRole !== "ADMIN" && userId.toString() !== userToUpdateId) {
-            // Si no es ADMIN y no está editando su propio perfil
             return res.status(403).json({
                 success: false,
                 msg: "No tienes permisos para modificar este usuario"
             });
         }
 
-        // Asegura que el email no se modifique
         data.email = existingUser.email;
 
-        // Manejo de cambio de contraseña
         if (newPassword) {
             if (!password) {
                 return res.status(400).json({
