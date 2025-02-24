@@ -25,7 +25,6 @@ export const dbConnection = async () => {
                     const adminPassword = await hash("12345678");
                     await Usuario.create({
                         name: "Admin",
-                        surname: "User",
                         username: "admin",
                         email: "admin@gmail.com",
                         password: adminPassword,
