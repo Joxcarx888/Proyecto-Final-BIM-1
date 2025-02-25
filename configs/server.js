@@ -9,6 +9,7 @@ import limiter from '../src/middlewares/validar-cant-peticiones.js';
 import authRoutes from '../src/auth/auth.routes.js';
 import userRoutes from '../src/users/user.routes.js';
 import categoryRoutes from '../src/categories/category.routes.js';
+import productRoutes from '../src/products/product.routes.js';
 
 
 const middlewares = (app) => {
@@ -24,6 +25,7 @@ const routes = (app) =>{
     app.use('/amazon/v1/auth', authRoutes);
     app.use('/amazon/v1/user', userRoutes);
     app.use('/amazon/v1/category', categoryRoutes);
+    app.use('/amazon/v1/product', productRoutes);
 }
 
 const conectarDB = async () => {

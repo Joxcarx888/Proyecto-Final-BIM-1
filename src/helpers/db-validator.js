@@ -1,4 +1,7 @@
 import User from '../users/user.model.js';
+import Category from '../categories/category.model.js';
+import Producto from '../products/product.model.js';
+
 
 
 export const existenteEmail = async (email = '') =>{
@@ -18,10 +21,19 @@ export const existeUsuarioById = async (id = '') => {
 }
 
 export const existenteCategory = async (name = '') =>{
-    const existenteCategory = await User.findOne({ name });
+    const existenteCategory = await Category.findOne({ name });
 
     if(existenteCategory){
         throw new Error(` ${ name } ya existe en la base de datos`);
     }
 }
+
+export const existenteProducto = async (name = '') =>{
+    const existenteProducto = await Producto.findOne({ name });
+
+    if(existenteProducto){
+        throw new Error(` ${ name } ya existe en la base de datos`);
+    }
+}
+
 
