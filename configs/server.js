@@ -10,6 +10,7 @@ import authRoutes from '../src/auth/auth.routes.js';
 import userRoutes from '../src/users/user.routes.js';
 import categoryRoutes from '../src/categories/category.routes.js';
 import productRoutes from '../src/products/product.routes.js';
+import cartRoutes from '../src/shoppingcart/shoppingcart.routes.js';
 
 
 const middlewares = (app) => {
@@ -26,6 +27,7 @@ const routes = (app) =>{
     app.use('/amazon/v1/user', userRoutes);
     app.use('/amazon/v1/category', categoryRoutes);
     app.use('/amazon/v1/product', productRoutes);
+    app.use('/amazon/v1/cart', cartRoutes);
 }
 
 const conectarDB = async () => {

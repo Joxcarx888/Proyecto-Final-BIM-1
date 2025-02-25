@@ -1,4 +1,5 @@
 import Category from "./category.model.js";
+import Product from "../products/product.model.js";
 
 export const createCategory = async (req, res) => {
   try {
@@ -91,30 +92,61 @@ export const listCategories = async (req, res) => {
 };
 
 export const deleteCategory = async (req, res) => {
-    try {
+  try {
       const { id } = req.params;
       const authenticatedUser = req.usuario;
-  
+
       if (!authenticatedUser || authenticatedUser.role !== "ADMIN") {
-        return res.status(403).json({
-          success: false,
-          message: "No tienes permisos para eliminar esta categoría",
-        });
+          return res.status(403).json({
+              success: false,
+              message: "No tienes permisos para eliminar esta categoría",
+          });
       }
-  
-      const category = await Category.findByIdAndUpdate(id, { status: false }, { new: true });
-  
+
+      
+      const category = await Category.findById(id);
+      if (!category) {
+          return res.status(404).json({
+              success: false,
+              message: "Categoría no encontrada",
+          });
+      }
+
+      
+      const defaultCategory = await Category.findOne({ name: "default" });
+      if (!defaultCategory) {
+          return res.status(500).json({
+              success: false,
+              message: "No se encontró la categoría por defecto. No se puede proceder con la eliminación.",
+          });
+      }
+
+      
+      await Product.updateMany(
+          { category: id },
+          { category: defaultCategory._id }
+      );
+
+      const updatedCategory = await Category.findByIdAndUpdate(
+          id,
+          { status: false },
+          { new: true }
+      );
+
       res.status(200).json({
-        success: true,
-        message: "Categoría eliminada exitosamente",
-        category,
+          success: true,
+          message: "Categoría eliminada exitosamente. Productos reasignados a la categoría por defecto.",
+          category: updatedCategory,
       });
-    } catch (error) {
+
+  } catch (error) {
+      console.error("Error al eliminar categoría:", error);
       res.status(500).json({
-        success: false,
-        message: "Error al eliminar categoría",
-        error,
+          success: false,
+          message: "Error al eliminar categoría",
+          error,
       });
-    }
-  };
+  }
+};
+
   
