@@ -1,0 +1,80 @@
+[{
+  "_id": {
+    "$oid": "67bdd345f0735addef688a74"
+  },
+  "name": "Motorola Edge 50 Pro",
+  "description": "Teefono Motorola 12 Ram y 512Gb, procesador SD7 Gen 3",
+  "brand": "Motorola",
+  "price": 4000,
+  "stock": 6,
+  "category": {
+    "$oid": "67bdd039c9c783a8d0078a14"
+  },
+  "status": true,
+  "createdAt": {
+    "$date": "2025-02-25T14:27:17.285Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-26T17:39:51.030Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67bdd4f2307a777e057f1ddf"
+  },
+  "name": "TV Toshiba 32°",
+  "description": "Pantalla LCD Alto Contraste",
+  "brand": "Toshiba",
+  "price": 2000,
+  "stock": 30,
+  "category": {
+    "$oid": "67bdc67068642b0ac00e3baf"
+  },
+  "status": true,
+  "createdAt": {
+    "$date": "2025-02-25T14:34:26.009Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-26T17:39:51.036Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67bdd7b5dcc11fa1a4dd3e69"
+  },
+  "name": "Samsung S24 Ultra",
+  "description": "Telefono Premium de Samsung, incuye Samsung IA",
+  "brand": "Samsung",
+  "price": 14999.99,
+  "stock": 12,
+  "category": {
+    "$oid": "67bdd039c9c783a8d0078a14"
+  },
+  "status": true,
+  "createdAt": {
+    "$date": "2025-02-25T14:46:13.689Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-26T17:39:51.038Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67bddd7b16114ed83c5cff94"
+  },
+  "name": "Samsung S21 FE",
+  "description": "Edicion para Fans que no pueden tener el normal",
+  "brand": "Samsung",
+  "price": 7000,
+  "stock": 0,
+  "category": {
+    "$oid": "67bdd039c9c783a8d0078a14"
+  },
+  "status": false,
+  "createdAt": {
+    "$date": "2025-02-25T15:10:51.439Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-25T15:17:09.639Z"
+  }
+}]

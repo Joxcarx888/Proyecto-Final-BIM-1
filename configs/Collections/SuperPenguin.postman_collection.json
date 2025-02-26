@@ -1,0 +1,822 @@
+{
+	"info": {
+		"_postman_id": "c7bdcac0-57bd-47fd-94a0-c5d2b631b93d",
+		"name": "SuperPenguin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42619138"
+	},
+	"item": [
+		{
+			"name": "Registrar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\" XD\",\r\n    \"username\":\"xd\",\r\n    \"email\":\"XD@gmail.com\",\r\n    \"password\":\"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar cuando es CLIENT",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzdiYTY4NjQyYjBhYzAwZTNiYjUiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDQ5MDgzNSwiZXhwIjoxNzQwNDk0NDM1fQ.v76vyA0tFyiXc74J3EIIAvNWyaQBOMX91XnuvN1Rob4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\" Lando Norris\",\r\n    \"username\":\"nor\",\r\n    \"email\":\"lnorris@gmail.com\",\r\n    \"password\":\"12345678\",\r\n    \"newPassword\":\"123456789\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/user/editar/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"user",
+						"editar",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar cuando es ADMIN",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY3MDY4NjQyYjBhYzAwZTNiYWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDQ5MDkzNSwiZXhwIjoxNzQwNDk0NTM1fQ.k1qCRr9FttN9YtTEtIFbJ3dKUuT7RPNeLE7BzImLDbc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\" Lando Norris\",\r\n    \"username\":\"nor\",\r\n    \"email\":\"lnorris@gmail.com\",\r\n    \"password\":\"123456789\",\r\n    \"newPassword\":\"12345678\",\r\n    \"role\":\"ADMIN\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/user/editar/67bdc7ba68642b0ac00e3bb5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"user",
+						"editar",
+						"67bdc7ba68642b0ac00e3bb5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eiminar Usuario desde cliente",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzk2YzY4NjQyYjBhYzAwZTNiZDAiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDQ5MTEyMiwiZXhwIjoxNzQwNDk0NzIyfQ.tvyU7QifQb_ViTNLzMM-V8L7Kj77Z5tUyiS_INFYsro",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password\":\"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/user/eliminar/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"user",
+						"eliminar",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eiminar cuando es Admin",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY3MDY4NjQyYjBhYzAwZTNiYWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDQ5MTI2NywiZXhwIjoxNzQwNDk0ODY3fQ.9RoIvWONlxYXYdOriliEoNFoIADIoZWB2eeK9D1RIvY",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/user/eliminar/67bdc96c68642b0ac00e3bd0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"user",
+						"eliminar",
+						"67bdc96c68642b0ac00e3bd0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver Categorias",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar Categoria",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY3MDY4NjQyYjBhYzAwZTNiYWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDQ5Mjg0MywiZXhwIjoxNzQwNDk2NDQzfQ.116FNpaHb2oY1uJxAfbDW38MR244NWBO1wxO42JQblU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Televisores\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/category/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"category",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Categoria",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY3MDY4NjQyYjBhYzAwZTNiYWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDQ5Mjg0MywiZXhwIjoxNzQwNDk2NDQzfQ.116FNpaHb2oY1uJxAfbDW38MR244NWBO1wxO42JQblU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Celulares\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/category/67bdd039c9c783a8d0078a14",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"category",
+						"67bdd039c9c783a8d0078a14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar Producto",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY3MDY4NjQyYjBhYzAwZTNiYWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDQ5MzYyMiwiZXhwIjoxNzQwNDk3MjIyfQ.M_iNNEvOdjGS9ELWig8wFU6SjrYV3YfUR74mr4w42xA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Samsung S21 FE\",\r\n  \"description\": \"Edicion para Fans que no pueden tener el normal\",\r\n  \"brand\": \"Samsung\",\r\n  \"price\": 7000,\r\n  \"stock\": 0,\r\n  \"categoryName\": \"Celulares\"\r\n\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/product/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Productos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/product/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"product",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mas vendidos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/product/best-sellers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"product",
+						"best-sellers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar por Nombre",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/product/search/ip",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"product",
+						"search",
+						"ip"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar por Categoria",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/product/category/Celulares",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"product",
+						"category",
+						"Celulares"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stock en 0",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY3MDY4NjQyYjBhYzAwZTNiYWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDQ5MzYyMiwiZXhwIjoxNzQwNDk3MjIyfQ.M_iNNEvOdjGS9ELWig8wFU6SjrYV3YfUR74mr4w42xA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/product/stock-out",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"product",
+						"stock-out"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Producto",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY3MDY4NjQyYjBhYzAwZTNiYWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDQ5MzYyMiwiZXhwIjoxNzQwNDk3MjIyfQ.M_iNNEvOdjGS9ELWig8wFU6SjrYV3YfUR74mr4w42xA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/product/67bddd7b16114ed83c5cff94",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"product",
+						"67bddd7b16114ed83c5cff94"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Nombre y Descripcion y Marca Producto",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY3MDY4NjQyYjBhYzAwZTNiYWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDQ5MzYyMiwiZXhwIjoxNzQwNDk3MjIyfQ.M_iNNEvOdjGS9ELWig8wFU6SjrYV3YfUR74mr4w42xA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Samsung S24 Ultra\",\r\n    \"description\": \"Telefono Premium de Samsung, incuye Samsung IA\",\r\n    \"brand\": \"Samsung\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/product/67bdd7b5dcc11fa1a4dd3e69",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"product",
+						"67bdd7b5dcc11fa1a4dd3e69"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Stock Producto",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY3MDY4NjQyYjBhYzAwZTNiYWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDQ5MzYyMiwiZXhwIjoxNzQwNDk3MjIyfQ.M_iNNEvOdjGS9ELWig8wFU6SjrYV3YfUR74mr4w42xA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"stock\":4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/product/67bdd7b5dcc11fa1a4dd3e69",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"product",
+						"67bdd7b5dcc11fa1a4dd3e69"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Precio Producto",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY3MDY4NjQyYjBhYzAwZTNiYWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDQ5OTkyMCwiZXhwIjoxNzQwNTAzNTIwfQ.MRiJbUFH3eOl600F0o496-Nm8TjiPox6_37Ai3omD4c",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"price\": 14999.99\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/product/67bdd7b5dcc11fa1a4dd3e69",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"product",
+						"67bdd7b5dcc11fa1a4dd3e69"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Categoria Producto",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY3MDY4NjQyYjBhYzAwZTNiYWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDQ5MzYyMiwiZXhwIjoxNzQwNDk3MjIyfQ.M_iNNEvOdjGS9ELWig8wFU6SjrYV3YfUR74mr4w42xA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"categoryName\": \"Celulares\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/product/67bdd7b5dcc11fa1a4dd3e69",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"product",
+						"67bdd7b5dcc11fa1a4dd3e69"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Carro vacio",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzc3ZjY4NjQyYjBhYzAwZTNiYjIiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDUwMDcxOCwiZXhwIjoxNzQwNTA0MzE4fQ.pFZ31sZLeBxCmRszfljxul0ecqwhA8VnGCrdOXdZ0SM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/cart",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Categoria",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzY3MDY4NjQyYjBhYzAwZTNiYWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDUwMTU1MCwiZXhwIjoxNzQwNTA1MTUwfQ.m4FDC2FYAumQ9cXLZH2UxhstnzPFCwn18lxwKxzo_04",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/category/67bdd473307a777e057f1ddb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"category",
+						"67bdd473307a777e057f1ddb"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Añadir Productos al Carro",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzc3ZjY4NjQyYjBhYzAwZTNiYjIiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDUwMDcxOCwiZXhwIjoxNzQwNTA0MzE4fQ.pFZ31sZLeBxCmRszfljxul0ecqwhA8VnGCrdOXdZ0SM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"productId\": \"67bdd4f2307a777e057f1ddf\",\r\n  \"quantity\": 2\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/cart/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"cart",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver Carrito",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Carrito",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzc3ZjY4NjQyYjBhYzAwZTNiYjIiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDUwMDcxOCwiZXhwIjoxNzQwNTA0MzE4fQ.pFZ31sZLeBxCmRszfljxul0ecqwhA8VnGCrdOXdZ0SM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/cart/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"cart",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar Factura",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2N2JkYzc3ZjY4NjQyYjBhYzAwZTNiYjIiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MDU4OTQ1MiwiZXhwIjoxNzQwNTkzMDUyfQ.zpNb9CkVnY91CN7z6rTu8kHNpAdgUlRugVL1ItVdq3A",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3333/amazon/v1/invoice/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"amazon",
+						"v1",
+						"invoice",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver Facturas",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Editar Factura",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

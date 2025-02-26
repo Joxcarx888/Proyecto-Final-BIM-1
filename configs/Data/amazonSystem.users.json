@@ -1,0 +1,72 @@
+[{
+  "_id": {
+    "$oid": "67bdc67068642b0ac00e3bac"
+  },
+  "name": "Admin",
+  "username": "admin",
+  "email": "admin@gmail.com",
+  "password": "$argon2id$v=19$m=65536,t=3,p=4$2pi/iJTgyp0bUfbIquQhWg$EPiHs2jncv3HcQ3LEak+wCWRi1ZYxJME819cazkxR+4",
+  "role": "ADMIN",
+  "purchaseHistory": [],
+  "estado": true,
+  "createdAt": {
+    "$date": "2025-02-25T13:32:32.096Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-25T13:32:32.096Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67bdc77f68642b0ac00e3bb2"
+  },
+  "name": "Charles Leclerc",
+  "username": "lec",
+  "email": "cleclerc@gmai.com",
+  "password": "$argon2id$v=19$m=65536,t=3,p=4$wOJY+Nz8Zc9GAZ6JMfDhOw$8ulfu49rcmyiVLFfbfblaPc9DxiNLv3OU1+711KcQto",
+  "role": "CLIENT",
+  "purchaseHistory": [],
+  "estado": true,
+  "createdAt": {
+    "$date": "2025-02-25T13:37:03.539Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-25T13:37:03.539Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67bdc7ba68642b0ac00e3bb5"
+  },
+  "name": "Lando Norris",
+  "username": "nor",
+  "email": "lnorris@gmail.com",
+  "password": "$argon2id$v=19$m=65536,t=3,p=4$tmwT5+4PdgV1PeTHuBregw$CeNm45xNW4+8UQ1p1zeSqI44y7azP2rA9M7nLrukytk",
+  "role": "ADMIN",
+  "purchaseHistory": [],
+  "estado": true,
+  "createdAt": {
+    "$date": "2025-02-25T13:38:02.320Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-25T13:43:59.516Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67bdc96c68642b0ac00e3bd0"
+  },
+  "name": "XD",
+  "username": "xd",
+  "email": "xd@gmail.com",
+  "password": "$argon2id$v=19$m=65536,t=3,p=4$3bUM4lDvxN0P8MgOQJ3gOw$pSrD2w1TiCLybjNfnD16XZromyPdzN8wBpiOoINlKws",
+  "role": "CLIENT",
+  "purchaseHistory": [],
+  "estado": false,
+  "createdAt": {
+    "$date": "2025-02-25T13:45:16.050Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-25T13:48:30.517Z"
+  }
+}]

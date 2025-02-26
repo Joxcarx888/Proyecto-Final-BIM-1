@@ -1,0 +1,39 @@
+[{
+  "_id": {
+    "$oid": "67bdc67068642b0ac00e3baf"
+  },
+  "name": "default",
+  "status": true,
+  "createdAt": {
+    "$date": "2025-02-25T13:32:32.109Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-25T13:32:32.109Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67bdd039c9c783a8d0078a14"
+  },
+  "name": "Celulares",
+  "status": true,
+  "createdAt": {
+    "$date": "2025-02-25T14:14:17.292Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-25T14:56:11.582Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67bdd473307a777e057f1ddb"
+  },
+  "name": "Televisores",
+  "status": false,
+  "createdAt": {
+    "$date": "2025-02-25T14:32:19.454Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-25T16:39:59.787Z"
+  }
+}]

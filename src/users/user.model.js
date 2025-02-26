@@ -31,12 +31,6 @@ const UserSchema = new Schema(
       enum: ["ADMIN", "CLIENT"],
       default: "CLIENT",
     },
-    purchaseHistory: [ 
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Invoice",
-      },
-    ],
     estado: {
       type: Boolean,
       default: true,
