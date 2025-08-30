@@ -1,6 +1,7 @@
 import User from '../users/user.model.js';
-import Category from '../categories/category.model.js';
 import Producto from '../products/product.model.js';
+import Provider from "../providers/provider.model.js";
+
 
 
 
@@ -20,13 +21,6 @@ export const existeUsuarioById = async (id = '') => {
     }
 }
 
-export const existenteCategory = async (name = '') =>{
-    const existenteCategory = await Category.findOne({ name });
-
-    if(existenteCategory){
-        throw new Error(` ${ name } ya existe en la base de datos`);
-    }
-}
 
 export const existenteProducto = async (name = '') =>{
     const existenteProducto = await Producto.findOne({ name });
@@ -36,4 +30,10 @@ export const existenteProducto = async (name = '') =>{
     }
 }
 
-
+export const existenteProvider = async (name = '') => {
+    const existente = await Provider.findOne({ name });
+  
+    if (existente) {
+      throw new Error(`El proveedor con nombre "${name}" ya existe en la base de datos`);
+    }
+  };

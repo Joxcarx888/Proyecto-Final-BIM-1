@@ -1,35 +1,24 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import {
-  createInvoice,
-  listInvoices,
-  updateInvoice,
-  softDeleteInvoice,
-  hardDeleteInvoice
-} from "./invoice.controller.js";
+import { createProvider, updateProvider, listProviders, softDeleteProvider, hardDeleteProvider } from "./provider.controller.js";
 import { validarJWT } from "../middlewares/validar-jwt.js";
 import { tieneRole } from "../middlewares/validar-roles.js";
 
 const router = Router();
 
-// Crear factura (Admin)
+// Crear proveedor (Admin)
 router.post(
   "/",
   [
     validarJWT,
     tieneRole("ADMIN"),
-    check("fechaCompra", "La fecha de compra es obligatoria").notEmpty(),
-    check("noFactura", "El número de factura es obligatorio").notEmpty(),
-    check("serieFactura", "La serie de factura es obligatoria").notEmpty(),
-    check("proveedor", "Proveedor inválido").isMongoId(),
+    check("name", "El nombre es obligatorio").notEmpty(),
+    check("number", "El número es obligatorio").notEmpty(),
   ],
-  createInvoice
+  createProvider
 );
 
-// Listar facturas
-router.get("/", validarJWT, listInvoices);
-
-// Editar factura (Admin)
+// Editar proveedor (Admin)
 router.put(
   "/:id",
   [
@@ -37,8 +26,11 @@ router.put(
     tieneRole("ADMIN"),
     check("id", "ID inválido").isMongoId(),
   ],
-  updateInvoice
+  updateProvider
 );
+
+// Listar proveedores activos
+router.get("/", listProviders);
 
 // Soft delete (Admin)
 router.delete(
@@ -48,7 +40,7 @@ router.delete(
     tieneRole("ADMIN"),
     check("id", "ID inválido").isMongoId(),
   ],
-  softDeleteInvoice
+  softDeleteProvider
 );
 
 // Hard delete (Admin)
@@ -59,7 +51,7 @@ router.delete(
     tieneRole("ADMIN"),
     check("id", "ID inválido").isMongoId(),
   ],
-  hardDeleteInvoice
+  hardDeleteProvider
 );
 
 export default router;

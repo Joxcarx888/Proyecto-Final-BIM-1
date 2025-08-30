@@ -28,8 +28,8 @@ const UserSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["ADMIN", "CLIENT"],
-      default: "CLIENT",
+      enum: ["ADMIN", "USER"],
+      default: "USER",
     },
     estado: {
       type: Boolean,

@@ -2,7 +2,7 @@
 
 import mongoose from "mongoose";
 import Usuario from "../src/users/user.model.js";
-import Category from "../src/categories/category.model.js"; 
+import Provider from "../src/providers/provider.model.js";  
 import { hash } from "argon2";
 
 export const dbConnection = async () => {
@@ -35,17 +35,16 @@ export const dbConnection = async () => {
                     console.log("Usuario administrador ya existe");
                 }
 
-
-                const defaultCategory = await Category.findOne({ name: "default" });
-                if (!defaultCategory) {
-                    await Category.create({ name: "default" });
-                    console.log("Categoría 'default' creada");
+                const defaultProvider = await Provider.findOne({ name: "default" }); 
+                if (!defaultProvider) {
+                    await Provider.create({ name: "default", email: "default@gmail.com", number: "+12345678" }); 
+                    console.log("Proveedor 'default' creado");
                 } else {
-                    console.log("Categoría 'default' ya existe");
+                    console.log("Proveedor 'default' ya existe");
                 }
 
             } catch (error) {
-                console.error("Error al verificar/crear admin o categoría:", error);
+                console.error("Error al verificar/crear admin o proveedor o categoria:", error);
             }
         });
 

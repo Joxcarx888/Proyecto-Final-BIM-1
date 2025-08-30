@@ -8,11 +8,9 @@ import { dbConnection } from './mongo.js';
 import limiter from '../src/middlewares/validar-cant-peticiones.js';
 import authRoutes from '../src/auth/auth.routes.js';
 import userRoutes from '../src/users/user.routes.js';
-import categoryRoutes from '../src/categories/category.routes.js';
+import providerRoutes from '../src/providers/provider.routes.js';
 import productRoutes from '../src/products/product.routes.js';
-import cartRoutes from '../src/shoppingcart/shoppingcart.routes.js';
 import invoiceRoutes from '../src/invoices/invoice.routes.js';
-
 
 const middlewares = (app) => {
     app.use(express.urlencoded({ extended: false }));
@@ -24,12 +22,12 @@ const middlewares = (app) => {
 }
 
 const routes = (app) =>{
-    app.use('/amazon/v1/auth', authRoutes);
-    app.use('/amazon/v1/user', userRoutes);
-    app.use('/amazon/v1/category', categoryRoutes);
-    app.use('/amazon/v1/product', productRoutes);
-    app.use('/amazon/v1/cart', cartRoutes);
-    app.use('/amazon/v1/invoice', invoiceRoutes)
+    app.use('/almacenadoraSystem/v1/auth', authRoutes);
+    app.use('/almacenadoraSystem/v1/user', userRoutes);
+    app.use('/almacenadoraSystem/v1/provider', providerRoutes);
+    app.use('/almacenadoraSystem/v1/product', productRoutes);
+    app.use('/almacenadoraSystem/v1/invoice', invoiceRoutes);
+
 }
 
 const conectarDB = async () => {
