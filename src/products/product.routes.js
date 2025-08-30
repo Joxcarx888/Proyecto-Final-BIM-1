@@ -3,28 +3,18 @@ import { check } from "express-validator";
 import { createProduct, updateProduct, listProducts, softDeleteProduct, hardDeleteProduct } from "./product.controller.js";
 import { validarJWT } from "../middlewares/validar-jwt.js";
 import { tieneRole } from "../middlewares/validar-roles.js";
+import upload from "../middlewares/upload.js";
 
 const router = Router();
 
 // Crear producto (Admin)
 router.post(
   "/",
-  [
-    validarJWT,
-    tieneRole("ADMIN"),
-    check("sku", "El SKU es obligatorio").notEmpty(),
-    check("nombreArticulo", "El nombre del artículo es obligatorio").notEmpty(),
-    check("descripcion", "La descripción es obligatoria").notEmpty(),
-    check("proveedor", "Proveedor inválido").isMongoId(),
-    check("unidad", "La unidad es obligatoria").notEmpty(),
-    check("cantidad", "Cantidad inválida").isNumeric(),
-    check("costoUnitario", "Costo unitario inválido").isNumeric(),
-    check("valorInventario", "Valor inventario inválido").isNumeric(),
-    check("valorConIvaSugerido", "Valor con IVA inválido").isNumeric(),
-    check("valorReal", "Valor real inválido").isNumeric(),
-  ],
+  [validarJWT, tieneRole("ADMIN")],
+  upload.array("imagenes", 5),
   createProduct
 );
+
 
 // Editar producto (Admin)
 router.put(
@@ -34,8 +24,10 @@ router.put(
     tieneRole("ADMIN"),
     check("id", "ID inválido").isMongoId(),
   ],
+  upload.array("imagenes", 5),
   updateProduct
 );
+
 
 // Listar productos
 router.get("/", listProducts);

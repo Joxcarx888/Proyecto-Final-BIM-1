@@ -1,6 +1,7 @@
 import Product from "./product.model.js";
+import fs from "fs";
 
-// Crear producto (sin asignar factura todavía)
+// Crear producto (con imágenes)
 export const createProduct = async (req, res) => {
   try {
     const {
@@ -8,6 +9,7 @@ export const createProduct = async (req, res) => {
       nombreArticulo,
       descripcion,
       proveedor,
+      factura,
       unidad,
       cantidad,
       costoUnitario,
@@ -16,24 +18,29 @@ export const createProduct = async (req, res) => {
       valorReal,
     } = req.body;
 
+    // Guardar rutas de imágenes
+    const imagenes = req.files ? req.files.map(file => file.path) : [];
+
     const product = new Product({
       sku,
       nombreArticulo,
       descripcion,
       proveedor,
+      factura,
       unidad,
       cantidad,
       costoUnitario,
       valorInventario,
       valorConIvaSugerido,
       valorReal,
+      imagenes,
     });
 
     await product.save();
 
     res.status(201).json({
       success: true,
-      message: "Producto creado exitosamente",
+      message: "Producto creado exitosamente con imágenes",
       product,
     });
   } catch (error) {
@@ -46,20 +53,39 @@ export const createProduct = async (req, res) => {
   }
 };
 
-// Editar producto
+// Editar producto (opción de actualizar imágenes)
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const updateData = { ...req.body };
 
-    const updatedProduct = await Product.findByIdAndUpdate(id, updateData, { new: true });
-
-    if (!updatedProduct) {
+    // Buscar el producto
+    const product = await Product.findById(id);
+    if (!product) {
       return res.status(404).json({
         success: false,
         message: "Producto no encontrado",
       });
     }
+
+    // Actualizar campos normales
+    const updateData = { ...req.body };
+
+    // Si llegan nuevas imágenes
+    if (req.files && req.files.length > 0) {
+      // Borrar imágenes anteriores del servidor si quieres limpiar
+      if (product.imagenes && product.imagenes.length > 0) {
+        product.imagenes.forEach(imgPath => {
+          if (fs.existsSync(imgPath)) {
+            fs.unlinkSync(imgPath);
+          }
+        });
+      }
+
+      // Guardar nuevas imágenes
+      updateData.imagenes = req.files.map(file => file.path);
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(id, updateData, { new: true });
 
     res.json({
       success: true,
@@ -71,17 +97,17 @@ export const updateProduct = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error al actualizar el producto",
-      error,
+      error: error.message || error,
     });
   }
 };
 
-// Listar productos activos
+// Listar productos activos con imágenes
 export const listProducts = async (req, res) => {
   try {
     const products = await Product.find({ status: true })
       .populate("proveedor", "name email number")
-      .populate("factura", "fecha numero serie"); // si ya existe
+      .populate("factura", "fechaCompra noFactura serieFactura");
 
     res.json({
       success: true,
@@ -92,7 +118,7 @@ export const listProducts = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error al obtener productos",
-      error,
+      error: error.message || error,
     });
   }
 };
@@ -125,7 +151,7 @@ export const softDeleteProduct = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error al eliminar producto",
-      error,
+      error: error.message || error,
     });
   }
 };
@@ -135,26 +161,35 @@ export const hardDeleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deletedProduct = await Product.findByIdAndDelete(id);
-
-    if (!deletedProduct) {
+    const product = await Product.findById(id);
+    if (!product) {
       return res.status(404).json({
         success: false,
         message: "Producto no encontrado",
       });
     }
 
+    // Borrar imágenes del servidor
+    if (product.imagenes && product.imagenes.length > 0) {
+      product.imagenes.forEach(imgPath => {
+        if (fs.existsSync(imgPath)) {
+          fs.unlinkSync(imgPath);
+        }
+      });
+    }
+
+    await Product.findByIdAndDelete(id);
+
     res.json({
       success: true,
       message: "Producto eliminado permanentemente",
-      product: deletedProduct,
     });
   } catch (error) {
     console.error("Error al eliminar producto:", error);
     res.status(500).json({
       success: false,
       message: "Error al eliminar producto",
-      error,
+      error: error.message || error,
     });
   }
 };

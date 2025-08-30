@@ -25,11 +25,12 @@ export const createInvoice = async (req, res) => {
 };
 
 // Listar facturas
+// Listar facturas
 export const listInvoices = async (req, res) => {
   try {
     const invoices = await Invoice.find({ status: true })
       .populate("proveedor", "name email number")
-      .populate("productos.producto", "nombreArticulo sku costoUnitario");
+      .populate("productos.producto", "nombreArticulo sku costoUnitario imagenes");
 
     res.json({
       success: true,
@@ -44,6 +45,7 @@ export const listInvoices = async (req, res) => {
     });
   }
 };
+
 
 // Editar factura (actualizar datos y productos existentes)
 export const updateInvoice = async (req, res) => {
@@ -106,9 +108,10 @@ export const updateInvoice = async (req, res) => {
 
     await invoice.save();
 
-    const populatedInvoice = await Invoice.findById(invoice._id)
-      .populate("proveedor", "name email number")
-      .populate("productos.producto", "nombreArticulo sku costoUnitario");
+  const populatedInvoice = await Invoice.findById(invoice._id)
+  .populate("proveedor", "name email number")
+  .populate("productos.producto", "nombreArticulo sku costoUnitario imagenes");
+
 
     res.json({
       success: true,
