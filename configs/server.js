@@ -22,11 +22,11 @@ const middlewares = (app) => {
 }
 
 const routes = (app) =>{
-    app.use('/almacenadoraSystem/v1/auth', authRoutes);
-    app.use('/almacenadoraSystem/v1/user', userRoutes);
-    app.use('/almacenadoraSystem/v1/provider', providerRoutes);
-    app.use('/almacenadoraSystem/v1/product', productRoutes);
-    app.use('/almacenadoraSystem/v1/invoice', invoiceRoutes);
+    app.use('/MundoChino/v1/auth', authRoutes);
+    app.use('/MundoChino/v1/user', userRoutes);
+    app.use('/MundoChino/v1/provider', providerRoutes);
+    app.use('/MundoChino/v1/product', productRoutes);
+    app.use('/MundoChino/v1/invoice', invoiceRoutes);
 
 }
 

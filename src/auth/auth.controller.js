@@ -35,7 +35,7 @@ export const login = async (req, res) => {
             });
         }
 
-        const token = await generarJWT(user.id);
+        const token = await generarJWT(user.id, user.role);
 
         return res.status(200).json({
             success: true,

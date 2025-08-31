@@ -16,7 +16,6 @@ const ProviderSchema = new Schema(
     },
     number: {
       type: String,
-      required: [true, "El número de contacto es requerido"],
     },
     status: {
       type: Boolean,

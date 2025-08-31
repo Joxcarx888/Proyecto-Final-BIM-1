@@ -31,7 +31,7 @@ const UserSchema = new Schema(
       enum: ["ADMIN", "USER"],
       default: "USER",
     },
-    estado: {
+    state: {
       type: Boolean,
       default: true,
     },

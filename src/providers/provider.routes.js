@@ -11,9 +11,7 @@ router.post(
   "/",
   [
     validarJWT,
-    tieneRole("ADMIN"),
-    check("name", "El nombre es obligatorio").notEmpty(),
-    check("number", "El número es obligatorio").notEmpty(),
+    tieneRole("ADMIN")
   ],
   createProvider
 );

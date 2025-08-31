@@ -1,43 +1,32 @@
 import jwt from 'jsonwebtoken';
-
-import Usuario from '../users/user.model.js';
+import User from '../users/user.model.js'; // usar el mismo modelo que tu login
 
 export const validarJWT = async (req, res, next) => {
-
     const token = req.header("x-token");
 
     if(!token){
-        return res.status(401).json({
-            msg: "No hay token en la peticion"
-        })
+        return res.status(401).json({ msg: "No hay token en la petición" });
     }
+
     try {
         const { uid } = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
 
-        const usuario = await Usuario.findById(uid);
-
+        const usuario = await User.findById(uid); // <-- cambio aquí
         if(!usuario){
-            return res.status(401).json({
-                msg: "Usuario no existe en la base de datos"
-            })
+            return res.status(401).json({ msg: "Usuario no existe en la base de datos" });
         }
 
-        if(!usuario.estado){
-            return res.status(401).json({
-                msg: "Token no valido - Usuario con estado: false"
-            })
+        if(!usuario.state){ // <-- cambio aquí
+            return res.status(401).json({ msg: "Token no válido - Usuario con state: false" });
         }
 
         req.usuario = usuario;
-
         next();
     } catch (e) {
         console.log(e);
-        res.status(401).json({
-            msg: "Token no valido"
-        })
+        return res.status(401).json({ msg: "Token no válido" });
     }
-}
+};
 
 export const tieneRole = (...roles) => {
     return (req, res, next) => {
@@ -45,18 +34,16 @@ export const tieneRole = (...roles) => {
             return res.status(500).json({
                 success: false,
                 msg: 'Se quiere verificar un rol sin validar el token primero'
-            })
+            });
         }
 
         if(!roles.includes(req.usuario.role)){
             return res.status(401).json({
                 success: false,
-                msg: `Usuario no autoizado, posee un rol ${req.usuario.role}, los roles autorizados son ${roles}`
-            })
-
+                msg: `Usuario no autorizado, posee un rol ${req.usuario.role}, los roles autorizados son ${roles}`
+            });
         }
 
         next();
     }
-
-}
+};
