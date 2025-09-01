@@ -16,10 +16,22 @@ const middlewares = (app) => {
     app.use(express.urlencoded({ extended: false }));
     app.use(cors());
     app.use(express.json());
-    app.use(helmet());
+    app.use(
+    helmet.crossOriginResourcePolicy({ policy: "cross-origin" })
+    );
     app.use(morgan('dev'));
     app.use(limiter);
+
+    // Sirve carpeta uploads como pública
+    app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 }
+
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const routes = (app) =>{
     app.use('/MundoChino/v1/auth', authRoutes);
@@ -27,6 +39,7 @@ const routes = (app) =>{
     app.use('/MundoChino/v1/provider', providerRoutes);
     app.use('/MundoChino/v1/product', productRoutes);
     app.use('/MundoChino/v1/invoice', invoiceRoutes);
+    app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 }
 

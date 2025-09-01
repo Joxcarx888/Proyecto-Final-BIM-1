@@ -6,7 +6,7 @@ const ProductSchema = new Schema(
     nombreArticulo: { type: String, required: true, trim: true },
     descripcion: { type: String, required: true, trim: true },
     proveedor: { type: Schema.Types.ObjectId, ref: "Provider", required: true },
-    factura: { type: Schema.Types.ObjectId, ref: "Invoice", required: true },
+    factura: { type: Schema.Types.ObjectId, ref: "Invoice"},
     unidad: { type: String, required: true, trim: true },
     cantidad: { type: Number, required: true, min: 0 },
     costoUnitario: { type: Number, required: true, min: 0 },

@@ -19,7 +19,8 @@ export const createProduct = async (req, res) => {
     } = req.body;
 
     // Guardar rutas de imágenes
-    const imagenes = req.files ? req.files.map(file => file.path) : [];
+    const imagenes = req.files ? req.files.map(file => file.path.replace(/\\/g, '/')) : [];
+
 
     const product = new Product({
       sku,

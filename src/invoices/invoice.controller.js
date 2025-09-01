@@ -6,13 +6,50 @@ export const createInvoice = async (req, res) => {
   try {
     const invoiceData = req.body;
 
+    // Guardamos la factura
     const invoice = new Invoice(invoiceData);
     await invoice.save();
 
+    // Actualizar productos incluidos en la factura
+    if (invoiceData.productos && invoiceData.productos.length > 0) {
+      let totalFactura = 0;
+
+      await Promise.all(
+        invoiceData.productos.map(async (p) => {
+          const product = await Product.findById(p.producto);
+          if (product) {
+            // Convertir a número por seguridad
+            const cantidad = Number(p.cantidad);
+            const costoUnitario = Number(p.costoUnitario);
+
+            // Actualizar stock de compra
+            product.cantidad += cantidad;
+
+            // Actualizar factura del producto
+            product.factura = invoice._id;
+
+            // Guardar subtotal en la factura
+            p.subtotal = cantidad * costoUnitario;
+
+            totalFactura += p.subtotal;
+
+            await product.save();
+          }
+        })
+      );
+
+      invoice.total = totalFactura;
+      await invoice.save();
+    }
+
+    const populatedInvoice = await Invoice.findById(invoice._id)
+      .populate("proveedor", "name email number")
+      .populate("productos.producto", "nombreArticulo sku costoUnitario imagenes");
+
     res.status(201).json({
       success: true,
-      message: "Factura creada exitosamente",
-      invoice,
+      message: "Factura creada exitosamente y productos actualizados",
+      invoice: populatedInvoice,
     });
   } catch (error) {
     console.error("Error al crear factura:", error);
@@ -24,7 +61,6 @@ export const createInvoice = async (req, res) => {
   }
 };
 
-// Listar facturas
 // Listar facturas
 export const listInvoices = async (req, res) => {
   try {
@@ -46,8 +82,7 @@ export const listInvoices = async (req, res) => {
   }
 };
 
-
-// Editar factura (actualizar datos y productos existentes)
+// Editar factura
 export const updateInvoice = async (req, res) => {
   try {
     const { id } = req.params;
@@ -58,7 +93,20 @@ export const updateInvoice = async (req, res) => {
       return res.status(404).json({ success: false, message: "Factura no encontrada" });
     }
 
-    // Actualizar datos básicos
+    // Restar stock de productos antiguos
+    if (invoice.productos && invoice.productos.length > 0) {
+      await Promise.all(
+        invoice.productos.map(async (oldItem) => {
+          const oldProduct = await Product.findById(oldItem.producto);
+          if (oldProduct) {
+            oldProduct.cantidad -= Number(oldItem.cantidad);
+            await oldProduct.save();
+          }
+        })
+      );
+    }
+
+    // Actualizar datos básicos de la factura
     if (fechaCompra) invoice.fechaCompra = fechaCompra;
     if (noFactura) invoice.noFactura = noFactura;
     if (serieFactura) invoice.serieFactura = serieFactura;
@@ -66,6 +114,7 @@ export const updateInvoice = async (req, res) => {
 
     let totalFactura = 0;
 
+    // Procesar productos nuevos
     for (let item of productos) {
       let productoDB;
 
@@ -85,21 +134,21 @@ export const updateInvoice = async (req, res) => {
         }
       }
 
-      // Asignar costo unitario desde Product si no viene
-      if (!item.costoUnitario || item.costoUnitario === 0) {
-        item.costoUnitario = productoDB.costoUnitario;
-      }
+      // Convertir a número por seguridad
+      item.cantidad = Number(item.cantidad);
+      item.costoUnitario = Number(item.costoUnitario || productoDB.costoUnitario);
 
       // Calcular subtotal
       item.subtotal = item.cantidad * item.costoUnitario;
 
-      // Actualizar stock del producto
-      productoDB.stock += item.cantidad;
+      // Actualizar stock
+      productoDB.cantidad += item.cantidad;
+      productoDB.factura = invoice._id;
       await productoDB.save();
 
       totalFactura += item.subtotal;
 
-      // Limpiar auxiliar para no guardar en DB
+      // Limpiar campo auxiliar
       delete item.nuevoProducto;
     }
 
@@ -108,10 +157,9 @@ export const updateInvoice = async (req, res) => {
 
     await invoice.save();
 
-  const populatedInvoice = await Invoice.findById(invoice._id)
-  .populate("proveedor", "name email number")
-  .populate("productos.producto", "nombreArticulo sku costoUnitario imagenes");
-
+    const populatedInvoice = await Invoice.findById(invoice._id)
+      .populate("proveedor", "name email number")
+      .populate("productos.producto", "nombreArticulo sku costoUnitario imagenes");
 
     res.json({
       success: true,
