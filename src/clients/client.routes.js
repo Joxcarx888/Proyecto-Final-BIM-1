@@ -1,45 +1,45 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import {
-  createProvider,
-  updateProvider,
-  listProviders,
-  hardDeleteProvider,
-} from "./provider.controller.js";
+  createClient,
+  updateClient,
+  listClients,
+  hardDeleteClient,
+} from "./client.controller.js";
 import { validarJWT } from "../middlewares/validar-jwt.js";
 
 const router = Router();
 
-// Crear proveedor
+// Crear cliente
 router.post(
   "/",
   [
     validarJWT,
   ],
-  createProvider
+  createClient
 );
 
-// Editar proveedor
+// Editar cliente
 router.put(
   "/:id",
   [
     validarJWT,
     check("id", "ID inválido").isMongoId(),
   ],
-  updateProvider
+  updateClient
 );
 
-// Listar proveedores activos
-router.get("/", listProviders);
+// Listar clientes activos
+router.get("/", listClients);
 
-// Hard delete proveedor
+// Hard delete cliente
 router.delete(
   "/:id",
   [
     validarJWT,
     check("id", "ID inválido").isMongoId(),
   ],
-  hardDeleteProvider
+  hardDeleteClient
 );
 
 export default router;

@@ -11,6 +11,7 @@ import userRoutes from '../src/users/user.routes.js';
 import providerRoutes from '../src/providers/provider.routes.js';
 import productRoutes from '../src/products/product.routes.js';
 import invoiceRoutes from '../src/invoices/invoice.routes.js';
+import clientsRoutes from '../src/clients/client.routes.js';
 
 const middlewares = (app) => {
     app.use(express.urlencoded({ extended: false }));
@@ -39,6 +40,7 @@ const routes = (app) =>{
     app.use('/MundoChino/v1/provider', providerRoutes);
     app.use('/MundoChino/v1/product', productRoutes);
     app.use('/MundoChino/v1/invoice', invoiceRoutes);
+    app.use('/MundoChino/v1/client', clientsRoutes);
     app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 }
