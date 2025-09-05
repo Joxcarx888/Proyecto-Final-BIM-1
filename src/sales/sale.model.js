@@ -59,32 +59,17 @@ const SaleSchema = new Schema(
 // Pre-save para calcular subtotales y total
 SaleSchema.pre("save", async function (next) {
   let total = 0;
-
   for (let item of this.productos) {
     const productoDB = await Product.findById(item.producto);
     if (!productoDB) {
       throw new Error(`Producto con ID ${item.producto} no encontrado`);
     }
-
-    // asignar el precio de venta desde valorReal
     item.precioVenta = productoDB.valorReal;
-
-    // calcular subtotal aplicando descuento
     const subtotalSinDesc = item.precioVenta * item.cantidad;
-    const montoDescuento = subtotalSinDesc * (item.descuento / 100);
+    const montoDescuento = subtotalSinDesc * (item.descuento || 0) / 100;
     item.subtotal = subtotalSinDesc - montoDescuento;
-
-    // acumular total
     total += item.subtotal;
-
-    // actualizar stock (resta)
-    if (productoDB.cantidad < item.cantidad) {
-      throw new Error(`Stock insuficiente para el producto ${productoDB.nombreArticulo}`);
-    }
-    productoDB.cantidad -= item.cantidad;
-    await productoDB.save();
   }
-
   this.totalVenta = total;
   next();
 });
