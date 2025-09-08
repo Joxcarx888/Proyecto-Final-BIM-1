@@ -83,7 +83,7 @@ export const listInvoices = async (req, res) => {
 };
 
 // Editar factura
-// Editar factura
+// Editar factura (REEMPLAZA cantidades en el inventario)
 export const updateInvoice = async (req, res) => {
   try {
     const { id } = req.params;
@@ -94,32 +94,23 @@ export const updateInvoice = async (req, res) => {
       return res.status(404).json({ success: false, message: "Factura no encontrada" });
     }
 
-    // ✅ Procesar productos con diferencia (en vez de restar y volver a sumar)
+    // ✅ Revertir el stock de la factura anterior
     if (invoice.productos && invoice.productos.length > 0) {
       await Promise.all(
         invoice.productos.map(async (oldItem) => {
           const oldProduct = await Product.findById(oldItem.producto);
           if (oldProduct) {
-            // Buscar el mismo producto en los nuevos
-            const newItem = productos.find((p) => String(p.producto) === String(oldItem.producto));
-
-            if (newItem) {
-              const diferencia = Number(newItem.cantidad) - Number(oldItem.cantidad);
-              oldProduct.cantidad += diferencia;
-              oldProduct.valorInventario = oldProduct.cantidad * oldProduct.costoUnitario;
-              await oldProduct.save();
-            } else {
-              // Si ya no está en la nueva factura, revertimos toda la cantidad
-              oldProduct.cantidad -= Number(oldItem.cantidad);
-              oldProduct.valorInventario = oldProduct.cantidad * oldProduct.costoUnitario;
-              await oldProduct.save();
-            }
+            // Restar lo que había aportado esta factura antes
+            oldProduct.cantidad -= Number(oldItem.cantidad);
+            if (oldProduct.cantidad < 0) oldProduct.cantidad = 0; // evitar negativos
+            oldProduct.valorInventario = oldProduct.cantidad * oldProduct.costoUnitario;
+            await oldProduct.save();
           }
         })
       );
     }
 
-    // Actualizar datos básicos
+    // Actualizar datos básicos de la factura
     if (fechaCompra) invoice.fechaCompra = fechaCompra;
     if (noFactura) invoice.noFactura = noFactura;
     if (serieFactura) invoice.serieFactura = serieFactura;
@@ -127,11 +118,12 @@ export const updateInvoice = async (req, res) => {
 
     let totalFactura = 0;
 
-    // Procesar productos (nuevos o existentes)
+    // ✅ Aplicar las nuevas cantidades de la factura
     for (let item of productos) {
       let productoDB;
 
       if (item.nuevoProducto) {
+        // Crear nuevo producto si no existe
         productoDB = new Product({
           ...item.nuevoProducto,
           proveedor: proveedor || invoice.proveedor,
@@ -148,20 +140,23 @@ export const updateInvoice = async (req, res) => {
         }
       }
 
-      item.cantidad = Number(item.cantidad);
-      item.costoUnitario = Number(item.costoUnitario || productoDB.costoUnitario);
-      item.subtotal = item.cantidad * item.costoUnitario;
+      const cantidad = Number(item.cantidad);
+      const costoUnitario = Number(item.costoUnitario || productoDB.costoUnitario);
 
-      // ✅ No volvemos a sumar cantidades aquí (ya se ajustó con diferencia arriba)
+      // ✅ Reemplazar la cantidad directamente (no sumar)
+      productoDB.cantidad = cantidad;
       productoDB.valorInventario = productoDB.cantidad * productoDB.costoUnitario;
       productoDB.factura = invoice._id;
 
-      await productoDB.save();
+      // Subtotal en la factura
+      item.subtotal = cantidad * costoUnitario;
       totalFactura += item.subtotal;
 
+      await productoDB.save();
       delete item.nuevoProducto;
     }
 
+    // Guardar cambios en la factura
     invoice.productos = productos;
     invoice.total = totalFactura;
 
@@ -169,11 +164,14 @@ export const updateInvoice = async (req, res) => {
 
     const populatedInvoice = await Invoice.findById(invoice._id)
       .populate("proveedor", "name email number")
-      .populate("productos.producto", "nombreArticulo sku costoUnitario cantidad valorInventario imagenes");
+      .populate(
+        "productos.producto",
+        "nombreArticulo sku costoUnitario cantidad valorInventario imagenes"
+      );
 
     res.json({
       success: true,
-      message: "Factura actualizada exitosamente",
+      message: "Factura actualizada exitosamente (cantidades reemplazadas)",
       invoice: populatedInvoice,
     });
   } catch (error) {
@@ -185,6 +183,8 @@ export const updateInvoice = async (req, res) => {
     });
   }
 };
+
+
 
 
 // Soft delete (status: false)
