@@ -84,6 +84,7 @@ export const listInvoices = async (req, res) => {
 
 // Editar factura
 // Editar factura (REEMPLAZA cantidades en el inventario)
+// Editar factura (ajusta stock correctamente según diferencia)
 export const updateInvoice = async (req, res) => {
   try {
     const { id } = req.params;
@@ -94,22 +95,6 @@ export const updateInvoice = async (req, res) => {
       return res.status(404).json({ success: false, message: "Factura no encontrada" });
     }
 
-    // ✅ Revertir el stock de la factura anterior
-    if (invoice.productos && invoice.productos.length > 0) {
-      await Promise.all(
-        invoice.productos.map(async (oldItem) => {
-          const oldProduct = await Product.findById(oldItem.producto);
-          if (oldProduct) {
-            // Restar lo que había aportado esta factura antes
-            oldProduct.cantidad -= Number(oldItem.cantidad);
-            if (oldProduct.cantidad < 0) oldProduct.cantidad = 0; // evitar negativos
-            oldProduct.valorInventario = oldProduct.cantidad * oldProduct.costoUnitario;
-            await oldProduct.save();
-          }
-        })
-      );
-    }
-
     // Actualizar datos básicos de la factura
     if (fechaCompra) invoice.fechaCompra = fechaCompra;
     if (noFactura) invoice.noFactura = noFactura;
@@ -118,47 +103,54 @@ export const updateInvoice = async (req, res) => {
 
     let totalFactura = 0;
 
-    // ✅ Aplicar las nuevas cantidades de la factura
-    for (let item of productos) {
-      let productoDB;
+    if (productos && productos.length > 0) {
+      await Promise.all(
+        productos.map(async (newItem) => {
+          let productoDB;
 
-      if (item.nuevoProducto) {
-        // Crear nuevo producto si no existe
-        productoDB = new Product({
-          ...item.nuevoProducto,
-          proveedor: proveedor || invoice.proveedor,
-        });
-        await productoDB.save();
-        item.producto = productoDB._id;
-      } else {
-        productoDB = await Product.findById(item.producto);
-        if (!productoDB) {
-          return res.status(404).json({
-            success: false,
-            message: `Producto con ID ${item.producto} no encontrado`,
-          });
-        }
-      }
+          if (newItem.nuevoProducto) {
+            // Crear nuevo producto si no existe
+            productoDB = new Product({
+              ...newItem.nuevoProducto,
+              proveedor: proveedor || invoice.proveedor,
+            });
+            await productoDB.save();
+            newItem.producto = productoDB._id;
+          } else {
+            productoDB = await Product.findById(newItem.producto);
+            if (!productoDB) {
+              throw new Error(`Producto con ID ${newItem.producto} no encontrado`);
+            }
+          }
 
-      const cantidad = Number(item.cantidad);
-      const costoUnitario = Number(item.costoUnitario || productoDB.costoUnitario);
+          const cantidadNueva = Number(newItem.cantidad);
+          const costoUnitario = Number(newItem.costoUnitario || productoDB.costoUnitario);
 
-      // ✅ Reemplazar la cantidad directamente (no sumar)
-      productoDB.cantidad = cantidad;
-      productoDB.valorInventario = productoDB.cantidad * productoDB.costoUnitario;
-      productoDB.factura = invoice._id;
+          // Buscar cantidad anterior en la factura
+          const oldItem = invoice.productos.find(
+            (p) => String(p.producto) === String(newItem.producto)
+          );
+          const cantidadAnterior = oldItem ? Number(oldItem.cantidad) : 0;
 
-      // Subtotal en la factura
-      item.subtotal = cantidad * costoUnitario;
-      totalFactura += item.subtotal;
+          // ✅ Ajustar stock según diferencia
+          const diferencia = cantidadNueva - cantidadAnterior;
+          productoDB.cantidad += diferencia;
+          if (productoDB.cantidad < 0) productoDB.cantidad = 0; // evitar negativos
+          productoDB.valorInventario = productoDB.cantidad * productoDB.costoUnitario;
+          productoDB.factura = invoice._id;
 
-      await productoDB.save();
-      delete item.nuevoProducto;
+          // Subtotal en la factura
+          newItem.subtotal = cantidadNueva * costoUnitario;
+          totalFactura += newItem.subtotal;
+
+          await productoDB.save();
+          delete newItem.nuevoProducto;
+        })
+      );
+
+      invoice.productos = productos;
+      invoice.total = totalFactura;
     }
-
-    // Guardar cambios en la factura
-    invoice.productos = productos;
-    invoice.total = totalFactura;
 
     await invoice.save();
 
@@ -171,7 +163,7 @@ export const updateInvoice = async (req, res) => {
 
     res.json({
       success: true,
-      message: "Factura actualizada exitosamente (cantidades reemplazadas)",
+      message: "Factura actualizada exitosamente",
       invoice: populatedInvoice,
     });
   } catch (error) {
