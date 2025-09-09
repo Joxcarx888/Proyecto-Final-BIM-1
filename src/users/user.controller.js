@@ -69,3 +69,18 @@ export const deleteUserHard = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+
+// Listar usuarios (solo los activos)
+export const listUsers = async (req, res) => {
+  try {
+    const users = await User.find({ state: true }).select("-password"); // excluimos el password
+    res.json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al listar usuarios" });
+  }
+};
+
