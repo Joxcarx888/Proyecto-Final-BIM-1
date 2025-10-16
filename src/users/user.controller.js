@@ -39,7 +39,7 @@ export const deleteUser = async (req, res) => {
 
     const userDeleted = await User.findByIdAndUpdate(
       id,
-      { estado: false },
+      { state: false },
       { new: true }
     );
 
